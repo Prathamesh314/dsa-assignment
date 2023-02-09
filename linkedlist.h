@@ -4,16 +4,55 @@
 #define srange(i, start, end) for (int i = start; i < end; i++)
 #define range(i, end) srange(i, 0, end)
 
+typedef struct stack{
+    int size;
+    char **arr;
+    int top;
+}stack;
+
 typedef struct node
 {
-  char data;
+  char *data;
   struct node *next;
+  stack *link;
 } node;
 
-node *newNode(int data)
+node *newNode(char *data)
 {
   node *temp = (node *)malloc(sizeof(node));
+  temp->data = (char *)malloc(sizeof(char));
   temp->data = data;
+}
+
+stack* create_stack(int size){
+    stack *s = (stack *)malloc(sizeof(stack));
+    s->size = size;
+    s->arr = (char **)malloc((s->size)*sizeof(char *));
+    s->top=-1;
+    return s;
+}
+
+void push(stack *s,char *s1){
+    if(s->top == s->size-1){
+        printf("Cannot Insert\n");
+    }
+    else{
+        s->top+=1;
+        s->arr[s->top] = (char *)malloc(sizeof(char));
+        s->arr[s->top] = s1;
+    }
+}
+
+void display(stack *s){
+    while(s->top>=0){
+        printf("%s\n",s->arr[s->top]);
+        s->top-=1;
+    }
+}
+
+node *join_linkedlist(node *temp,stack *s){
+    temp->link = s;
+    return temp;
 }
 
 void isEmptyLL(node *head)
@@ -34,7 +73,7 @@ int lengthLL(node *head)
   return count;
 }
 
-int searchLL(node *head, char key)
+int searchLL(node *head, char *key)
 {
   int flag, count1;
   flag = count1 = 0;
